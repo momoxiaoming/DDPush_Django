@@ -179,10 +179,10 @@ def updateApk(request):
 
         app_ver=int(app_ver)
 
-        if app_ver>6:
+        if app_ver<10:
             #需要更新,组装参数
 
-            return HttpResponse(ResUtil.sucResDict('检查到新版本', str({"apkUrl":"http://api.momoxiaoming.com:9101/static/test.apk","apkVer":"7"})))
+            return HttpResponse(ResUtil.sucResDict('检查到新版本', str({"apkUrl":"http://api.momoxiaoming.com:9102/static/test.apk","apkVer":"10"})))
 
         else:
             return HttpResponse(ResUtil.errorResDict('无需更新'))
