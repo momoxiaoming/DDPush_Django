@@ -3,7 +3,7 @@
 from django.shortcuts import render
 import json
 from django.http import HttpResponse,Http404
-from .models import UserModel
+from .models import UserModel,UserTask
 from ddpush_android.models import DeviceModel,TaskModel
 import requests
 
@@ -240,6 +240,116 @@ def bindDingAccount(request):
             userModel.wx_bindpwd=pwd
             userModel.save()
             return HttpResponse(ResUtil.sucResDict('绑定成功'))
+
+    else:
+
+        return HttpResponse(ResUtil.errorResDict("请使用post方式请求"))
+
+
+def qurTask(request):
+    """
+    定时任务
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        resParam = json.loads(request.body)
+        # 获取devToken,taskType
+        if resParam == '' or resParam == None:
+            return HttpResponse(ResUtil.errorResDict('请求参数为空'))
+
+        wxAppid = resParam['wxAppId']
+
+        if wxAppid == None or wxAppid == '':
+            return HttpResponse(ResUtil.errorResDict('appId不存在'))
+
+        # 查询定时任务
+        db_cur = UserTask.objects.filter(wx_appId=wxAppid)
+
+        if db_cur.count() > 0:
+            userTask = db_cur[0]
+            wx_up_time=userTask.wx_up_time
+            wx_down_time=userTask.wx_down_time
+
+            up_check=True
+            down_check=True
+
+            if wx_up_time==None or wx_up_time =='':
+                up_check=True
+                wx_up_time='00:00'
+
+            if wx_down_time == None or wx_down_time =='':
+                down_check = True
+                wx_down_time='00:00'
+
+
+            resDa={"up":{"ischeck":up_check ,"time": wx_up_time},"down":{"ischeck": down_check,"time": wx_down_time}}
+
+            return HttpResponse(ResUtil.sucResDict('获取成功',resDa))
+
+
+        else:
+
+
+
+            return HttpResponse(ResUtil.sucResDict('获取成功'))
+
+    else:
+
+        return HttpResponse(ResUtil.errorResDict("请使用post方式请求"))
+
+from .DsTask import task
+def saveTask(request):
+    """
+    定时任务
+    :param request:
+    :return:
+    """
+
+
+
+
+    if request.method == 'POST':
+        resParam = json.loads(request.body)
+        # 获取devToken,taskType
+        if resParam == '' or resParam == None:
+            return HttpResponse(ResUtil.errorResDict('请求参数为空'))
+
+        wxAppId = resParam['wxAppId']
+        up_check = resParam['task']['up']['ischeck']
+        down_check = resParam['task']['up']['ischeck']
+
+        up_time=resParam['task']['up']['time']
+        down_time=resParam['task']['down']['time']
+
+        if up_check==False:
+            up_time=''
+
+        if down_check==False:
+            down_time=''
+
+
+        if wxAppId == None or wxAppId == '':
+            return HttpResponse(ResUtil.errorResDict('appid不存在'))
+
+        db_cur = UserTask.objects.filter(wx_appId=wxAppId)
+
+        if db_cur.count() > 0:
+            # 更新绑定信息
+            user = db_cur[0]
+            user.wx_up_time = up_time
+            user.wx_down_time = down_time
+            user.wx_status_date= ResUtil.getTime_str()
+            user.save()
+        else:
+
+            userModel = UserTask(wx_appId=wxAppId, wx_up_time=up_time, wx_down_time=down_time,
+                                 wx_status_date=ResUtil.getTime_str())
+            userModel.save()
+
+        return HttpResponse(ResUtil.sucResDict('保存成功', {}))
+
+
 
     else:
 

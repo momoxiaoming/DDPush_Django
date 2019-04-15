@@ -13,3 +13,12 @@ class UserModel(models.Model):
     wx_bindAccount = models.CharField(max_length=32,null=True)      #绑定的钉钉手机号
     wx_bindpwd     = models.CharField(max_length=32,null=True)      #绑定的钉钉密码
 
+
+# 定时任务
+class UserTask(models.Model):
+    wx_appId       = models.CharField(max_length=124)      # 微信appid
+    wx_up_time     = models.CharField(max_length=32,null=True)  # 上班定时任务时间
+    wx_down_time   = models.CharField(max_length=32,null=True)  # 下班定时任务时间
+    wx_status_date = models.CharField(max_length=124,null=True) #时间
+
+

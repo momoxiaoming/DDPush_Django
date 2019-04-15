@@ -7,5 +7,7 @@ urlpatterns = [
     path('queryData/', views.queryData, name='queryData'),
     path('getWxUserInfo/', views.getWxUserInfo, name='getWxUserInfo'),
     path('bindDingAccount/', views.bindDingAccount, name='bindDingAccount'),
+    path('qurTask/', views.qurTask, name='qurTask'),
+    path('saveTask/', views.saveTask, name='saveTask'),
 
 ]

@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+
+
+
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,6 +29,9 @@ SECRET_KEY = 'i#7ce-7z@av7!#^a6&n79#7@jb7opf396zh93)rmdu4v0p*y8j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+
+
 
 ALLOWED_HOSTS = [
     '*',
@@ -41,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',  #定时任务
+    'djcelery',   #定时任务
 ]
 
 MIDDLEWARE = [
@@ -82,6 +92,8 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
+
+    #服务器
     'default': {
         'ENGINE': 'django.db.backends.mysql',   #mysql 驱动
         'NAME': 'ddpush',   #数据库名称
@@ -90,6 +102,16 @@ DATABASES = {
         'HOST': '111.230.253.162',
         'PORT': '3306',
     }
+
+    #本地
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',  # mysql 驱动
+    #     'NAME': 'ddpush',  # 数据库名称
+    #     'USER': 'root',
+    #     'PASSWORD': 'root',
+    #     'HOST': '127.0.0.1',
+    #     'PORT': '3306',
+    # }
 }
 
 
@@ -132,3 +154,31 @@ APPEND_SLASH = False   #去除网址后面默认加 /
 # 查找器,查找全局目录下static文件夹
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 STATIC_URL = '/static/'
+
+# 定时任务配置
+CRONJOBS = [
+    # 表示每分钟执行
+    ('*/1 * * * *', 'ddpush_wx.DsTask.task','>>/data/web/log/DsTask_task.log'),
+    # ('*/1 * * * *', 'ddpush_wx.DsTask.test', '>>/Users/zhangxiaoming/test.log')
+
+]
+
+
+# djcelery 定时任务配置
+import djcelery
+djcelery.setup_loader()
+# BROKER_URL = 'redis://127.0.0.1:6379/6'
+CELERY_IMPORTS = ('ddpush_wx.DsTask', )
+CELERY_TIMEZONE = TIME_ZONE
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+# 下面是定时任务的设置，我一共配置了三个定时任务.
+from celery.schedules import crontab
+CELERYBEAT_SCHEDULE = {
+    #定时任务一：　每24小时周期执行任务(del_redis_data)
+    u'定时执行任务': {
+        "task": "ddpush_wx.DsTask.task",
+        "schedule": crontab(minute='*/1'),
+        "args": (),
+    },
+}

@@ -84,6 +84,9 @@ def taskQury(request):
         else:
 
             taskDict=qurTask[0]
+            if taskDict.task_state=='3':
+                return HttpResponse(ResUtil.sucResDict('无设备任务'))
+
             if taskDict.task_type=='1001':
                 #设备登录,组装账号密码
                 rlt=UserModel.objects.filter(wx_devToken=devToken)
@@ -97,6 +100,8 @@ def taskQury(request):
                     return HttpResponse(ResUtil.errorResDict('未绑定钉钉账号密码,无法登陆'))
             else:
                 resDict = {"taskType": taskDict.task_type, "taskId": taskDict.id, "taskData": {}}
+                taskDict.task_state='3'
+                taskDict.save()
                 return HttpResponse(ResUtil.sucResDict('任务拉取成功', str(resDict)))
     else:
         return HttpResponse(ResUtil.errorResDict('请求方式错误'))
@@ -179,10 +184,10 @@ def updateApk(request):
 
         app_ver=int(app_ver)
 
-        if app_ver<10:
+        if app_ver<2:
             #需要更新,组装参数
 
-            return HttpResponse(ResUtil.sucResDict('检查到新版本', str({"apkUrl":"http://api.momoxiaoming.com:9102/static/test.apk","apkVer":"10"})))
+            return HttpResponse(ResUtil.sucResDict('检查到新版本', str({"apkUrl":"http://api.momoxiaoming.com:9102/static/app-release_v2.apk","apkVer":"2"})))
 
         else:
             return HttpResponse(ResUtil.errorResDict('无需更新'))

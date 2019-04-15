@@ -23,7 +23,8 @@ class DeviceModel(models.Model):
 class TaskModel(models.Model):
     dev_token   = models.CharField(max_length=128)        #设备id,这里存储的是dev_token
     task_type   = models.CharField(max_length=20)         #任务类型,1001设备登录,1002 上班卡,1003 下班卡,1004早退下班,1005更新下班
-    task_state  = models.CharField(max_length=10)         #任务状态 0是未完成,1是已完成,2已失败
+    task_state  = models.CharField(max_length=10)         #任务状态 0是未完成,1是已完成,2已失败,3已下发
     task_cr_date= models.CharField(max_length=64)         #任务创建时间
     task_sh_date= models.CharField(max_length=64)         #任务完成时间
     task_desc   = models.CharField(max_length=64,null=True)         #任务描述
+
