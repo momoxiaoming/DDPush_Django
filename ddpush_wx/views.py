@@ -89,12 +89,12 @@ def bindDev(request):
             return HttpResponse(ResUtil.errorResDict('设备码不存在'))
 
         #查询token是否存在,先查绑定表,再查设备表
-        db_cur=UserModel.objects.filter(wx_devToken=devToken)
+        db_cur=UserModel.objects.filter(wx_appId=wxAppId)
         if db_cur.count() > 0:
             #更新绑定信息
             user=db_cur[0]
             user.wx_userName=wxName
-            user.wx_appId=wxAppId
+            user.wx_devToken=devToken
             user.wx_bindEmail=bindEmail
             user.save()
             return HttpResponse(ResUtil.sucResDict('绑定成功',{"bindState":0}))
