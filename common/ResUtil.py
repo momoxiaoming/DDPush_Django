@@ -19,6 +19,11 @@ def sucResDict(resMsg_str,resData_str=""):
 # 获取当前时间,格式2018-09-06 11:11:11
 def getTime_str():
     time = timezone.localtime(timezone.now()).strftime("%Y-%m-%d %H:%M:%S")
+    return time
+
+    # 获取当天时间
+def getCurDayTime_str():
+    time = timezone.localtime(timezone.now()).strftime("%Y-%m-%d")+' 00:00:00'
 
     return time
 # 获取当前时间的小时数

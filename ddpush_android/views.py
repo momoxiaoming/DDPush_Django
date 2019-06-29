@@ -75,7 +75,7 @@ def taskQury(request):
         if devToken=='' or devToken is None:
             return HttpResponse(ResUtil.errorResDict('设备devToken为空!'))
         # 查询未完成任务
-        qurTask=TaskModel.objects.filter(task_state='0',dev_token=devToken)
+        qurTask=TaskModel.objects.filter(task_state='0',dev_token=devToken,task_cr_date__gt=ResUtil.getCurDayTime_str())
 
         if qurTask.count()==0:
             #无任务
