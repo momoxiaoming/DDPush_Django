@@ -11,9 +11,9 @@ class emailUtil:
 
     _reciveEmail=''
     def __init__(self):
-        self.__qqEmail='2742372881@qq.com'
-        self.__qqPwd='uuuqvapuwvaedcff'
-        self._reciveEmail='245545357@qq.com'
+        self.__qqEmail='xxxx'
+        self.__qqPwd='xxxx'
+        self._reciveEmail='xxxx'
     def sendEmail(self,content,receiveremail=None):
         if receiveremail==None:
             receiveremail=self._reciveEmail
