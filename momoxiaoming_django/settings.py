@@ -97,10 +97,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',   #mysql 驱动
         'NAME': 'ddpush',   #数据库名称
-        'USER': 'root',
-        'PASSWORD': 'root@aA139079',
-        'HOST': '111.230.253.162',
-        'PORT': '3306',
+        'USER': 'xx',
+        'PASSWORD': 'xxx',
+        'HOST': 'xxx',
+        'PORT': 'xx',
     }
 
     #本地
