@@ -4,7 +4,7 @@ billiard==3.3.0.23
 celery==3.1.26.post2
 certifi==2018.10.15
 chardet==3.0.4
-Django==2.1.2
+Django==2.2.13
 django-celery==3.2.2
 django-crontab==0.7.1
 gunicorn==19.9.0
