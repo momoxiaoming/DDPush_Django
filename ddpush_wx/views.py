@@ -10,8 +10,8 @@ import requests
 from common import ResUtil
 # Create your views here.
 
-APPID ='wx3fdb350495fe6b71'   #小程序appid
-SECRET='b822b75f076125a6a38d50784f8ad9df' #小程序scret
+APPID ='xxx'   #小程序appid
+SECRET='xxxx' #小程序scret
 
 
 #通过前端login之后得到code,发送到微信后台换区openid
