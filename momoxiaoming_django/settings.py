@@ -103,15 +103,7 @@ DATABASES = {
         'PORT': 'xx',
     }
 
-    #本地
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',  # mysql 驱动
-    #     'NAME': 'ddpush',  # 数据库名称
-    #     'USER': 'root',
-    #     'PASSWORD': 'root',
-    #     'HOST': '127.0.0.1',
-    #     'PORT': '3306',
-    # }
+  
 }
 
 
